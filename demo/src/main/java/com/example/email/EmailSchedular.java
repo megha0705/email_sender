@@ -23,7 +23,7 @@ public class EmailSchedular {
         this.currentIndex = 0;
     }
 
-    // Runs every 90 seconds
+    
     @Scheduled(fixedDelay = 90000)
     public void sendNextEmail() throws IOException {
         if (emailList != null && currentIndex < emailList.size()) {
