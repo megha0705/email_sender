@@ -15,19 +15,16 @@ public class EmailController {
     FileReader fileReader;
     @Autowired
     EmailLogService emailLogService;
+    @Autowired
+    EmailSchedular emailSchedular;
     @GetMapping("send_email")
     public String sentEmail() throws IOException {
         List<EmailModel> emails = fileReader.readFromCsv();
         MessageModel message = fileReader.readFromTxt();
-        emailService.sendEmail(emails , message);
+        emailSchedular.scheduleEmails(emails, message);
         emailLogService.output();
         return "email sent";
     }
-    @GetMapping("log_entry")
-    public String emailLog() throws IOException {
-        emailLogService.emailLog("chakrabortyreshmi@gmail.com" ,EmailStatus.SUCCESSFUL , null );
 
-        return "log updated";
-    }
 
 }

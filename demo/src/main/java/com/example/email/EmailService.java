@@ -14,9 +14,8 @@ public class EmailService {
     private JavaMailSender javaMailSender;
     @Autowired
     EmailLogService emailLogService;
+
     public void sendEmail(List<EmailModel> emails , MessageModel message) throws IOException {
-
-
 
             for (EmailModel email : emails) {
                 try{
