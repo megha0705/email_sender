@@ -1,4 +1,4 @@
-package com.example.email;
+package com.example.email.model;
 
 public class MessageModel {
     private String subject;

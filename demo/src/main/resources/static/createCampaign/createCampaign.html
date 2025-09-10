@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Create Campaign | Maketronics</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+<div class="container">
+    <h2>Create New Campaign</h2>
+
+    <label for="campaign-file">Upload CSV File:</label>
+    <input type="file" id="campaign-file" accept=".csv">
+
+    <label for="campaign-date">Select Date & Time:</label>
+    <input type="datetime-local" id="campaign-date">
+
+    <button class="action" onclick="createCampaign()">Create Campaign</button>
+
+    <p id="campaign-error" class="error"></p>
+    <p id="campaign-response"></p>
+</div>
+
+<script src="index.js"></script>
+</body>
+</html>

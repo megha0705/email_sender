@@ -1,0 +1,71 @@
+.container {
+    width: 90%;
+    margin: 30px auto;
+    font-family: Arial, sans-serif;
+}
+
+h2 {
+    text-align: center;
+    margin-bottom: 20px;
+    font-size: 24px;
+    color: #333;
+}
+
+.logs-table {
+    width: 100%;
+    border-collapse: separate;
+    border-spacing: 0 8px;
+    margin-top: 20px;
+    background-color: #fff;
+}
+
+.logs-table th, .logs-table td {
+    padding: 12px 16px;          /* more padding for readability */
+    text-align: left;
+}
+
+.logs-table th {
+    background-color: #f8f9fa;
+    border-bottom: 2px solid #ddd;
+    font-size: 14px;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    color: #555;
+}
+
+.logs-table tr {
+    background-color: #fff;
+    box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+}
+
+.logs-table tr:hover {
+    background-color: #f1f1f1;
+}
+
+/* Rounded corners */
+.logs-table tr td:first-child {
+    border-top-left-radius: 8px;
+    border-bottom-left-radius: 8px;
+}
+.logs-table tr td:last-child {
+    border-top-right-radius: 8px;
+    border-bottom-right-radius: 8px;
+}
+
+
+.status.successful {
+    color: #28a745;
+    font-weight: bold;
+}
+.status.failed {
+    color: #dc3545;
+    font-weight: bold;
+}
+.status.invalid_email {
+    color: #fd7e14;
+    font-weight: bold;
+}
+.status.duplicate {
+    color: #007bff;
+    font-weight: bold;
+}

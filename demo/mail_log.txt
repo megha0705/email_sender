@@ -85,3 +85,5 @@
 2025-08-15T19:51:45.724571900 | rakhig1201@gmail.com           | SUCCESSFUL | 
 2025-08-15T19:52:01.963149300 | Sakshi.Gupta2023@iem.edu.in    | SUCCESSFUL | 
 2025-08-15T19:52:17.235904100 | darshanpatildp275@gmail.com    | FAILED | Failed messages: org.eclipse.angus.mail.smtp.SMTPSendFailedException: 550-5.4.5 Daily user sending limit exceeded. For more information on Gmail
+2025-09-09T17:24:05.349973100 | chakrabortyreshmi401@gmail.com | SUCCESSFUL | 
+2025-09-09T17:26:05.332061 | chakrabortyreshmi401@gmail.com | SUCCESSFUL | 

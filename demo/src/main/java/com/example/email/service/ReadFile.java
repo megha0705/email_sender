@@ -1,63 +1,70 @@
-package com.example.email;
+package com.example.email.service;
 
+import com.example.email.model.EmailModel;
+import com.example.email.model.EmailStatus;
+import com.example.email.model.MessageModel;
 import com.opencsv.bean.CsvToBean;
 import com.opencsv.bean.CsvToBeanBuilder;
+import jakarta.mail.internet.InternetAddress;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.InputStreamReader;
 import java.io.Reader;
+
+import java.io.*;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
 @Service
-public class FileReader {
+public class ReadFile {
     @Autowired
     EmailLogService emailLogService;
+
     public boolean isValidEmail(String email) {
-        String emailRegex = "^[A-Za-z0-9+_.-]+@[A-Za-z0-9.-]+$";
-        if(email != null && email.matches(emailRegex)){
-            return true;
-        };
-        return  false;
-    }
-    public List<EmailModel> readFromCsv(){
+
         try {
-            Reader reader = new InputStreamReader(getClass().getResourceAsStream("/emails.csv"));
+            InternetAddress internetAddress = new InternetAddress(email);
+            internetAddress.validate();
+
+            String emailRegex = "^[A-Za-z0-9+_.-]+@[A-Za-z0-9.-]+\\.[A-Za-z]{2,}$";
+            return email.matches(emailRegex);
+
+        } catch (Exception e) {
+            return false;
+        }
+    }
+
+    public List<EmailModel> readFromCsv(String filePath) {
+        try (Reader reader = new FileReader(filePath)) {
             CsvToBean<EmailModel> csvToBean = new CsvToBeanBuilder<EmailModel>(reader)
                     .withType(EmailModel.class)
                     .withIgnoreLeadingWhiteSpace(true)
                     .build();
-            List<EmailModel> allEmails=  csvToBean.parse();
+
+            List<EmailModel> allEmails = csvToBean.parse();
             Set<String> uniqueEmails = new HashSet<>();
             List<EmailModel> validEmails = new ArrayList<>();
 
-            for(EmailModel email : allEmails){
-               if(email.getEmail() == null || email.getEmail().trim().isEmpty()){
-
-
-                   continue;
-               }
-               if(!isValidEmail(email.getEmail())){
-
-                   emailLogService.emailLog(email.getEmail(), EmailStatus.INVALID_EMAIL, null);
-                   continue;
-               }
-               if(!uniqueEmails.add(email.getEmail())){
-
-                   emailLogService.emailLog(email.getEmail() , EmailStatus.DUPLICATE, null);
-                   continue;
-               }
-               validEmails.add(email);
-
+            for (EmailModel email : allEmails) {
+                if (email.getEmail() == null || email.getEmail().trim().isEmpty()) {
+                    continue; // skip empty emails
+                }
+                if (!isValidEmail(email.getEmail())) {
+                    emailLogService.emailLog(email.getEmail(), EmailStatus.INVALID_EMAIL, null);
+                    continue;
+                }
+                if (!uniqueEmails.add(email.getEmail())) {
+                    emailLogService.emailLog(email.getEmail(), EmailStatus.DUPLICATE, null);
+                    continue;
+                }
+                validEmails.add(email);
             }
             return validEmails;
-        }catch (Exception e){
-            throw new RuntimeException("email could nnot be read");
+
+        } catch (Exception e) {
+            throw new RuntimeException("Failed to read CSV from: " + filePath, e);
         }
     }
 

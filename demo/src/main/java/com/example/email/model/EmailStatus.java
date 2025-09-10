@@ -1,4 +1,4 @@
-package com.example.email;
+package com.example.email.model;
 
 public enum EmailStatus {
     SUCCESSFUL,

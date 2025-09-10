@@ -1,11 +1,11 @@
-package com.example.email;
+package com.example.email.service;
 
+import com.example.email.repository.EmailLogRepo;
+import com.example.email.model.EmailStatus;
+import com.example.email.model.EmailLogModel;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.awt.datatransfer.SystemFlavorMap;
-import java.io.BufferedReader;
-import java.io.BufferedWriter;
-import java.io.FileWriter;
 import java.io.IOException;
 import java.time.LocalDateTime;
 @Service
@@ -14,8 +14,10 @@ public class EmailLogService {
    private int invalidEmails = 0;
    private int validEmails = 0;
    private  int failedEmail = 0;
+    @Autowired
+    EmailLogRepo emailLogRepo;
 
-    public void emailLog(String email , EmailStatus status  ,String errorMessage) throws IOException {
+    public void emailLog(String email , EmailStatus status  , String errorMessage) throws IOException {
         proccessedEmails++;
         if(status == EmailStatus.INVALID_EMAIL){
             invalidEmails++;
@@ -24,17 +26,14 @@ public class EmailLogService {
         }else if(status == EmailStatus.SUCCESSFUL){
             validEmails++;
         }
-        FileWriter file = new FileWriter("mail_log.txt", true);
 
-        String logEntry = String.format("%s | %-30s | %s | %s",
-                LocalDateTime.now(), email, status,
-                errorMessage == null? "":errorMessage);
+        EmailLogModel emailLogModel = new EmailLogModel();
+        emailLogModel.setEmailId(email);
+        emailLogModel.setStatus(status);
+        emailLogModel.setErrorMsg(errorMessage);
+        emailLogModel.setLogTime(LocalDateTime.now());
 
-        try (BufferedWriter writer = new BufferedWriter(file)) {
-            writer.write(logEntry);
-            writer.newLine();
-        }
-
+        emailLogRepo.save(emailLogModel);
 
 
     }

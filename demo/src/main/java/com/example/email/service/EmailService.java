@@ -1,5 +1,8 @@
-package com.example.email;
+package com.example.email.service;
 
+import com.example.email.model.EmailStatus;
+import com.example.email.model.EmailModel;
+import com.example.email.model.MessageModel;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.mail.SimpleMailMessage;
 import org.springframework.mail.javamail.JavaMailSender;
@@ -20,7 +23,7 @@ public class EmailService {
             for (EmailModel email : emails) {
                 try{
                 SimpleMailMessage simpleMailMessage = new SimpleMailMessage();
-                simpleMailMessage.setFrom("reshmichakraborty2411@gmail.com");
+                simpleMailMessage.setFrom("reshmi");
                 simpleMailMessage.setTo(email.getEmail());
                 simpleMailMessage.setSubject(message.getSubject());
                 simpleMailMessage.setText(message.getBody());
