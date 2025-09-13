@@ -18,7 +18,7 @@ public class EmailService {
     @Autowired
     EmailLogService emailLogService;
 
-    public void sendEmail(List<EmailModel> emails , MessageModel message) throws IOException {
+    public void sendEmail(List<EmailModel> emails , MessageModel message , Long fileId) throws IOException {
 
             for (EmailModel email : emails) {
                 try{
@@ -28,9 +28,9 @@ public class EmailService {
                 simpleMailMessage.setSubject(message.getSubject());
                 simpleMailMessage.setText(message.getBody());
                 javaMailSender.send(simpleMailMessage);
-                emailLogService.emailLog(email.getEmail(), EmailStatus.SUCCESSFUL , null);
+                emailLogService.emailLog(email.getEmail(), EmailStatus.SUCCESSFUL , null , fileId);
             }catch(Exception e){
-                    emailLogService.emailLog(email.getEmail() , EmailStatus.FAILED , e.getMessage());
+                    emailLogService.emailLog(email.getEmail() , EmailStatus.FAILED , e.getMessage() , fileId);
                 }
         }
     }

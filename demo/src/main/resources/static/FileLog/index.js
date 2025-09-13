@@ -8,7 +8,11 @@ async function fetchLogs() {
     logs.forEach(log => {
       const row = `<tr>
         <td>${log.id}</td>
-        <td>${log.fileName}</td>
+         <td>
+          <a href="FileEmail.html?fileId=${log.id}" class="file-link">
+            ${log.fileName}
+          </a>
+        </td>
         <td>${log.scheduledTime || '-'}</td>
         <td class="status-${log.status}">${log.status}</td>
 

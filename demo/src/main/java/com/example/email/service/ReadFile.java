@@ -36,7 +36,7 @@ public class ReadFile {
         }
     }
 
-    public List<EmailModel> readFromCsv(String filePath) {
+    public List<EmailModel> readFromCsv(Long fileId , String filePath) {
         try (Reader reader = new FileReader(filePath)) {
             CsvToBean<EmailModel> csvToBean = new CsvToBeanBuilder<EmailModel>(reader)
                     .withType(EmailModel.class)
@@ -52,11 +52,11 @@ public class ReadFile {
                     continue; // skip empty emails
                 }
                 if (!isValidEmail(email.getEmail())) {
-                    emailLogService.emailLog(email.getEmail(), EmailStatus.INVALID_EMAIL, null);
+                    emailLogService.emailLog(email.getEmail(), EmailStatus.INVALID_EMAIL, null , fileId);
                     continue;
                 }
                 if (!uniqueEmails.add(email.getEmail())) {
-                    emailLogService.emailLog(email.getEmail(), EmailStatus.DUPLICATE, null);
+                    emailLogService.emailLog(email.getEmail(), EmailStatus.DUPLICATE, null , fileId);
                     continue;
                 }
                 validEmails.add(email);

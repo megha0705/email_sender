@@ -1,5 +1,6 @@
 package com.example.email.model;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import jakarta.persistence.*;
 
@@ -24,6 +25,11 @@ public class EmailLogModel {
     private String errorMsg;
 
 
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "file_id", nullable = false)
+    @JsonBackReference
+    private CsvFileLogModel fileLog;
+
 
 
     public EmailLogModel() {
@@ -40,6 +46,14 @@ public class EmailLogModel {
     // Getters and Setters
     public Long getId() {
         return id;
+    }
+
+    public CsvFileLogModel getFileLog() {
+        return fileLog;
+    }
+
+    public void setFileLog(CsvFileLogModel fileLog) {
+        this.fileLog = fileLog;
     }
 
     public LocalDateTime getLogTime() {

@@ -47,14 +47,14 @@ public class CampaignService {
     public void scheduleCampaign(Long csvFileId, String filePath, LocalDateTime dateTime) {
         taskScheduler.schedule(() -> {
             try {
-                List<EmailModel> emails = readFile.readFromCsv(filePath);
+                List<EmailModel> emails = readFile.readFromCsv(csvFileId , filePath);
                 System.out.println("Loaded " + emails.size() + " emails from " + filePath);
                 for (EmailModel e : emails) {
                     System.out.println(e.getEmail());
                 }
 
                 MessageModel message = readFile.readFromTxt();
-                emailService.sendEmail(emails, message);
+                emailService.sendEmail(emails, message , csvFileId);
                 csvFileLogService.updateStatus(csvFileId , "SENT");
                 System.out.println("Emails sent at " + LocalDateTime.now());
             } catch (Exception e) {

@@ -1,8 +1,12 @@
 package com.example.email.model;
 
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
+
 @Entity
 @Table
 public class CsvFileLogModel {
@@ -14,6 +18,18 @@ public class CsvFileLogModel {
     private LocalDateTime scheduledTime;
     private String status;
     private LocalDateTime createdAt = LocalDateTime.now();
+
+    @OneToMany(mappedBy = "fileLog", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    @JsonManagedReference
+    private List<EmailLogModel> emailLogs = new ArrayList<>();
+
+    public List<EmailLogModel> getEmailLogs() {
+        return emailLogs;
+    }
+
+    public void setEmailLogs(List<EmailLogModel> emailLogs) {
+        this.emailLogs = emailLogs;
+    }
 
     public Long getId() {
         return id;

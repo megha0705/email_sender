@@ -41,3 +41,12 @@ tr:nth-child(even) {
   color: red;
   font-weight: bold;
 }
+.status-INVALID_EMAIL {
+  color: red;
+  font-weight: bold;
+}
+
+.status-SUCCESSFUL {
+  color: green;
+  font-weight: bold;
+}
