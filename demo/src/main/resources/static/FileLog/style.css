@@ -50,3 +50,7 @@ tr:nth-child(even) {
   color: green;
   font-weight: bold;
 }
+.status-DUPLICATE {
+  color: gray;
+  font-weight: bold;
+}

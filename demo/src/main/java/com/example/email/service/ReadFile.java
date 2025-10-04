@@ -100,42 +100,7 @@ public class ReadFile {
     }
 
 
-    /*
 
-    public List<EmailModel> readFromCsv(Long fileId , String filePath) throws FileNotFoundException, VerifaliaException {
-
-
-
-        try (Reader reader = new FileReader(filePath)) {
-            CsvToBean<EmailModel> csvToBean = new CsvToBeanBuilder<EmailModel>(reader)
-                    .withType(EmailModel.class)
-                    .withIgnoreLeadingWhiteSpace(true)
-                    .build();
-
-            List<EmailModel> allEmails = csvToBean.parse();
-            Set<String> uniqueEmails = new HashSet<>();
-            List<EmailModel> validEmails = new ArrayList<>();
-
-            for (EmailModel email : allEmails) {
-                if (email.getEmail() == null || email.getEmail().trim().isEmpty()) {
-                    continue;
-                }
-                if (!isValidEmail(email.getEmail())) {
-                    emailLogService.emailLog(email.getEmail(), EmailStatus.INVALID_EMAIL, null , fileId);
-                    continue;
-                }
-                if (!uniqueEmails.add(email.getEmail())) {
-                    emailLogService.emailLog(email.getEmail(), EmailStatus.DUPLICATE, null , fileId);
-                    continue;
-                }
-                validEmails.add(email);
-            }
-            return validEmails;
-
-        } catch (Exception e) {
-            throw new RuntimeException("Failed to read CSV from: " + filePath, e);
-        }
-    }*/
 
     public MessageModel readFromTxt()throws IOException {
 
