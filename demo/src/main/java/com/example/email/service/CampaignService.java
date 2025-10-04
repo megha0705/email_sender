@@ -31,7 +31,8 @@ public class CampaignService {
     private EmailService emailService;
     @Autowired
     CsvFileLogService csvFileLogService;
-
+    @Autowired
+    CleanCsvFileService cleanCsvFileService;
     public String saveFile(MultipartFile file) throws IOException {
         Path uploadPath = Paths.get(UPLOAD_DIR);
         if (!Files.exists(uploadPath)) {
@@ -47,10 +48,11 @@ public class CampaignService {
     public void scheduleCampaign(Long csvFileId, String filePath, LocalDateTime dateTime) {
         taskScheduler.schedule(() -> {
             try {
-                List<EmailModel> emails = readFile.readFromCsv(csvFileId , filePath);
+                String cleanedFile = cleanCsvFileService.cleanCsvFile(filePath);
+                List<String> emails = readFile.readFromCsv(csvFileId , cleanedFile);
                 System.out.println("Loaded " + emails.size() + " emails from " + filePath);
-                for (EmailModel e : emails) {
-                    System.out.println(e.getEmail());
+                for (String e : emails) {
+                    System.out.println(e);
                 }
 
                 MessageModel message = readFile.readFromTxt();

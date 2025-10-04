@@ -18,19 +18,19 @@ public class EmailService {
     @Autowired
     EmailLogService emailLogService;
 
-    public void sendEmail(List<EmailModel> emails , MessageModel message , Long fileId) throws IOException {
+    public void sendEmail(List<String> emails , MessageModel message , Long fileId) throws IOException {
 
-            for (EmailModel email : emails) {
+            for (String email : emails) {
                 try{
                 SimpleMailMessage simpleMailMessage = new SimpleMailMessage();
                 simpleMailMessage.setFrom("reshmi");
-                simpleMailMessage.setTo(email.getEmail());
+                simpleMailMessage.setTo(email);
                 simpleMailMessage.setSubject(message.getSubject());
                 simpleMailMessage.setText(message.getBody());
                 javaMailSender.send(simpleMailMessage);
-                emailLogService.emailLog(email.getEmail(), EmailStatus.SUCCESSFUL , null , fileId);
+                emailLogService.emailLog(email, EmailStatus.SUCCESSFUL , null , fileId);
             }catch(Exception e){
-                    emailLogService.emailLog(email.getEmail() , EmailStatus.FAILED , e.getMessage() , fileId);
+                    emailLogService.emailLog(email, EmailStatus.FAILED , e.getMessage() , fileId);
                 }
         }
     }
