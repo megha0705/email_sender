@@ -16,6 +16,9 @@ async function fetchLogs() {
         <td>${log.scheduledTime || '-'}</td>
         <td class="status-${log.status}">${log.status}</td>
 
+         <td>
+            <button class="reschedule-btn" onclick="reschedule(${log.id})">Reschedule</button>
+          </td>
       </tr>`;
       tableBody.innerHTML += row;
     });
@@ -23,7 +26,10 @@ async function fetchLogs() {
     console.error("Error fetching logs:", error);
   }
 }
+function reschedule(fileId) {
 
+  window.location.href = `../createCampaign/createCampaign.html?fileId=${fileId}`;
+}
 
 fetchLogs();
 setInterval(fetchLogs, 10000);

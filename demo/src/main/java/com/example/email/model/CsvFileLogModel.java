@@ -17,8 +17,11 @@ public class CsvFileLogModel {
     private String fileName;
     private LocalDateTime scheduledTime;
     private String status;
+    private String filePath;
     private LocalDateTime createdAt = LocalDateTime.now();
-
+    @OneToOne(mappedBy = "csvFileLog", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    @JsonManagedReference
+    private EmailContentModel emailContent;
     @OneToMany(mappedBy = "fileLog", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     @JsonManagedReference
     private List<EmailLogModel> emailLogs = new ArrayList<>();
@@ -69,5 +72,21 @@ public class CsvFileLogModel {
 
     public void setCreatedAt(LocalDateTime createdAt) {
         this.createdAt = createdAt;
+    }
+
+    public EmailContentModel getEmailContent() {
+        return emailContent;
+    }
+
+    public void setEmailContent(EmailContentModel emailContent) {
+        this.emailContent = emailContent;
+    }
+
+    public String getFilePath() {
+        return filePath;
+    }
+
+    public void setFilePath(String filePath) {
+        this.filePath = filePath;
     }
 }

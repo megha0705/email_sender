@@ -4,6 +4,8 @@
     <meta charset="UTF-8">
     <title>Create Campaign | Maketronics</title>
     <link rel="stylesheet" href="style.css">
+
+    <script src="https://cdn.tiny.cloud/1/y21odirj61p461l64sl5jx6pikb0eweh3gudvowi7p69ycby/tinymce/7/tinymce.min.js" referrerpolicy="origin"></script>
 </head>
 <body>
 <div class="container">
@@ -11,11 +13,24 @@
 
     <label for="campaign-file">Upload CSV File:</label>
     <input type="file" id="campaign-file" accept=".csv">
-
+    <p id="existing-file" style="color:#555;font-style:italic;margin-top:4px;"></p>
     <label for="campaign-date">Select Date & Time:</label>
     <input type="datetime-local" id="campaign-date">
 
-    <button class="action" onclick="createCampaign()">Create Campaign</button>
+
+    <label for="email-subject">Email Subject:</label>
+    <input type="text" id="email-subject" placeholder="Enter email subject">
+
+
+    <label for="email-body">Email Body:</label>
+    <textarea id="email-body"></textarea>
+
+
+
+    <div class="button-group">
+        <button class="action" type="button" onclick="previewEmail()">Preview</button>
+        <button class="action" type="button" onclick="createCampaign()">Create Campaign</button>
+    </div>
 
     <p id="campaign-error" class="error"></p>
     <p id="campaign-response"></p>

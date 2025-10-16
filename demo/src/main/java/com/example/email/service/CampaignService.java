@@ -1,7 +1,10 @@
 package com.example.email.service;
 
+import com.example.email.model.CsvFileLogModel;
 import com.example.email.model.EmailModel;
 import com.example.email.model.MessageModel;
+import com.example.email.repository.CsvFileRepo;
+import com.example.email.repository.EmailContentRepo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.scheduling.TaskScheduler;
 import org.springframework.stereotype.Service;
@@ -33,6 +36,10 @@ public class CampaignService {
     CsvFileLogService csvFileLogService;
     @Autowired
     CleanCsvFileService cleanCsvFileService;
+    @Autowired
+    CsvFileRepo csvFileRepo;
+    @Autowired
+    EmailContentRepo emailContentRepo;
     public String saveFile(MultipartFile file) throws IOException {
         Path uploadPath = Paths.get(UPLOAD_DIR);
         if (!Files.exists(uploadPath)) {
@@ -55,8 +62,10 @@ public class CampaignService {
                     System.out.println(e);
                 }
 
-                MessageModel message = readFile.readFromTxt();
-                emailService.sendEmail(emails, message , csvFileId);
+              //  MessageModel message = readFile.readFromTxt();
+                CsvFileLogModel csv = csvFileRepo.findById(csvFileId).orElseThrow(()-> new RuntimeException("csv File not found"));
+
+                emailService.sendEmail(emails,csv.getEmailContent().getBody(),csv.getEmailContent().getSubject(), csvFileId);
                 csvFileLogService.updateStatus(csvFileId , "SENT");
                 System.out.println("Emails sent at " + LocalDateTime.now());
             } catch (Exception e) {
@@ -65,4 +74,6 @@ public class CampaignService {
             }
         }, Date.from(dateTime.atZone(ZoneId.systemDefault()).toInstant()));
     }
+
+
 }

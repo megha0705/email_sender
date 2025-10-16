@@ -21,14 +21,34 @@ CsvFileLogService csvFileLogService;
     @PostMapping("/campaign/create")
     public ResponseEntity<String> createCampaign(
             @RequestParam("file") MultipartFile file,
-            @RequestParam("dateTime") String dateTimeStr) throws Exception {
+            @RequestParam("dateTime") String dateTimeStr,
+            @RequestParam("subject") String subject,
+            @RequestParam("body") String body
+            ) throws Exception {
 
         LocalDateTime dateTime = LocalDateTime.parse(dateTimeStr, DateTimeFormatter.ISO_LOCAL_DATE_TIME);
         String filePath = campaignService.saveFile(file);
-       Long  csvFileId = csvFileLogService.addFile(file.getOriginalFilename() , dateTime);
+       Long csvFileId = csvFileLogService.addFile(file.getOriginalFilename() , dateTime, subject , body, filePath);
         campaignService.scheduleCampaign(csvFileId , filePath, dateTime);
 
         return ResponseEntity.ok("Campaign scheduled for " + dateTime);
+    }
+
+    @PostMapping("/campaign/reschedule")
+    public ResponseEntity<String> rescheduleCampaign(
+            @RequestParam("fileId") Long fileId,
+            @RequestParam("dateTime") String dateTimeStr,
+            @RequestParam("subject") String subject,
+            @RequestParam("body") String body
+    ) throws Exception {
+
+        LocalDateTime dateTime = LocalDateTime.parse(dateTimeStr, DateTimeFormatter.ISO_LOCAL_DATE_TIME);
+
+        String filePath = csvFileLogService.getExistingFilePath(fileId);
+        Long csvFileId = csvFileLogService.updateCsvFileLog(fileId, dateTime, subject , body, filePath);
+        campaignService.scheduleCampaign(csvFileId, filePath, dateTime);
+
+        return ResponseEntity.ok("Campaign rescheduled for " + dateTime);
     }
 
 }

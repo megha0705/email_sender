@@ -3,9 +3,11 @@ package com.example.email.service;
 import com.example.email.model.EmailStatus;
 import com.example.email.model.EmailModel;
 import com.example.email.model.MessageModel;
+import jakarta.mail.internet.MimeMessage;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.mail.SimpleMailMessage;
 import org.springframework.mail.javamail.JavaMailSender;
+import org.springframework.mail.javamail.MimeMessageHelper;
 import org.springframework.stereotype.Service;
 
 import java.io.IOException;
@@ -18,16 +20,18 @@ public class EmailService {
     @Autowired
     EmailLogService emailLogService;
 
-    public void sendEmail(List<String> emails , MessageModel message , Long fileId) throws IOException {
+    public void sendEmail(List<String> emails , String body , String subject , Long fileId) throws IOException {
 
             for (String email : emails) {
                 try{
-                SimpleMailMessage simpleMailMessage = new SimpleMailMessage();
-                simpleMailMessage.setFrom("reshmi");
-                simpleMailMessage.setTo(email);
-                simpleMailMessage.setSubject(message.getSubject());
-                simpleMailMessage.setText(message.getBody());
-                javaMailSender.send(simpleMailMessage);
+                    MimeMessage mimeMessage = javaMailSender.createMimeMessage();
+                    MimeMessageHelper helper = new MimeMessageHelper(mimeMessage, true, "UTF-8");
+                    helper.setFrom("reshmichakraborty2411@gmail.com"); // 🔹 put a real email here
+                    helper.setTo(email);
+                    helper.setSubject(subject);
+                    helper.setText(body, true);
+
+                javaMailSender.send(mimeMessage);
                 emailLogService.emailLog(email, EmailStatus.SUCCESSFUL , null , fileId);
             }catch(Exception e){
                     emailLogService.emailLog(email, EmailStatus.FAILED , e.getMessage() , fileId);
